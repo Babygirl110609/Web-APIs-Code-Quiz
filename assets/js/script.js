@@ -1,6 +1,7 @@
 //Declare variables.
 var currentQuestion = 0;
-var score = 0;
+var time = questions.length *15;
+var timerid;
 var c = 60;
 var totquestions = questions.length;
 var quizContainer = document.getElementById("quiz-container");
@@ -13,6 +14,7 @@ var nextBtn = document.getElementById("next");
 var startBtn = document.getElementById("start");
 var subBtn = document.getElementById("submit");
 var result = document.getElementById("result");
+var timerEl = document.getElementById("timer");
 
 
 //Load question and choices for user to select.
@@ -34,7 +36,10 @@ function loadNextQuestion(){
     }
     var answer = userChoice.value;
     if(questions[currentQuestion].answer === answer){
-        score += 1;
+        time += 1;
+    }
+    if(questions[currentQuestion].answer !== answer){
+        time -= 5;
     }
     userChoice.checked = false;
     currentQuestion++;
@@ -42,8 +47,8 @@ function loadNextQuestion(){
         startBtn.style.visibility='hidden';
         nextBtn.style.visibility='hidden';
         quizContainer.style.display="none";
-        result.style.display="";
-        result.textContent = score;
+        result.style.display=time;
+        result.textContent = time;
         return;
     }
     loadQuestion(currentQuestion);
@@ -59,11 +64,15 @@ function loadNextQuestion(){
 //Stopwatch
 var myTimer;
 function clock() {
-    myTimer = setInterval(myClock, 1000);
-    function myClock() {
-        document.getElementById("timer").innerHTML = c--;
-        if (c == 0) {
-        clearInterval(myTimer);
-       }
+    myTimer = setInterval(clocktick, 1000);
+    
+}
+
+function clocktick() {
+    time--;
+    timerEl.textContent=time
+    if(time<=0) {
+    clearInterval(myTimer); 
+// end quiz() {  
     }
 }
